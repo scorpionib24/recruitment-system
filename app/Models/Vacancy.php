@@ -35,5 +35,10 @@ class Vacancy extends Model
         'deadline' => 'date',
     ];
 
+    public function candidates() {
+        return $this->belongsToMany(Candidate::class, 'applications')->withTimestamps();
+    }
+
+
 
 }

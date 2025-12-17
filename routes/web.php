@@ -24,6 +24,15 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 // إنه عام ومتاح للجميع.
 Route::get('/vacancies/{vacancy}', [VacancyController::class, 'show'])->name('vacancies.show');
 
+
+// رابط لعرض نموذج التقديم لوظيفة معينة
+Route::get('/vacancies/{vacancy}/apply', [ApplicationController::class, 'create'])->name('vacancies.apply.create');
+
+// رابط لاستقبال بيانات نموذج التقديم
+Route::post('/vacancies/{vacancy}/apply', [ApplicationController::class, 'store'])->name('vacancies.apply.store');
+
+
+
 // =============================================
 // ====     روابط لوحة التحكم المحمية      ====
 // =============================================

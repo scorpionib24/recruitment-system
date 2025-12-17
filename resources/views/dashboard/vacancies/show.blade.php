@@ -43,8 +43,7 @@
                     <hr>
 
                     <div class="text-center mt-4">
-                        {{-- هذا الزر سيقود إلى صفحة التقديم التي سنبنيها لاحقاً --}}
-                        <a href="#" class="btn btn-success btn-lg">التقديم الآن</a>
+                        <a href="{{ route('vacancies.apply.create', $vacancy->id) }}" class="btn btn-success btn-lg">التقديم الآن</a>
                     </div>
                 </div>
             </div>

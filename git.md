@@ -878,3 +878,17 @@ git branch -d feat/vacancies-management
 
 
 php artisan make:controller Dashboard/VacancyController --resource --model=Vacancy
+
+
+##  new Feature ######## 
+git switch main
+git pull origin main  # للتأكد من أن نسختك المحلية متطابقة مع GitHub
+
+
+git switch -c feat/candidate-portal
+
+1) php artisan make:controller Public/ApplicationController
+2) realtion between candaite and application
+
+لجعل ملفات السيرة الذاتية التي يتم رفعها قابلة للوصول عبر رابط عام، نفّذ هذا الأمر مرة واحدة فقط في المشروع.
+php artisan storage:link
