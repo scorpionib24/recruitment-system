@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('email')->unique();
             $table->string('phone')->nullable();
-            $table->string('password'); // للسماح له بتسجيل الدخول للوحة التحكم
+            $table->string('password')->nullable();; // للسماح له بتسجيل الدخول للوحة التحكم
             $table->string('resume_path')->nullable(); // مسار السيرة الذاتية
             $table->text('cover_letter')->nullable(); // خطاب التقديم
             $table->rememberToken();

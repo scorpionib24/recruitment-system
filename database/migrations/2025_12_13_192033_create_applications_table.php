@@ -15,10 +15,14 @@ return new class extends Migration
             $table->id();
             $table->foreignId('candidate_id')->constrained('candidates');
             $table->foreignId('vacancy_id')->constrained('vacancies');  
+            
            // (new, screening, interview, offer, rejected, hired)
             $table->string('stage')->default('new');
+
             // (Qualified, Not Qualified, Qualified with Training)
             $table->string('rating')->nullable();
+             // تاريخ التقديم
+        $table->timestamp('applied_at')->nullable();
             $table->timestamps();
              //     // تعديل القيد لمنع التقديم المزدوج
             $table->unique(['candidate_id', 'vacancy_id']);

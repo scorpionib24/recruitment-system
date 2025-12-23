@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\BranchController;
 use App\Http\Controllers\Dashboard\VacancyController;
-
+use App\Http\Controllers\Public\ApplicationController;
+use App\Http\Controllers\Dashboard\VacancyApplicationController;
 
 // =============================================
 // ====          الروابط العامة            ====
@@ -32,6 +33,12 @@ Route::get('/vacancies/{vacancy}/apply', [ApplicationController::class, 'create'
 Route::post('/vacancies/{vacancy}/apply', [ApplicationController::class, 'store'])->name('vacancies.apply.store');
 
 
+// (اختياري ولكن جيد) رابط لصفحة "شكراً لك" بعد التقديم
+Route::get('/apply/success', function () {
+    return "شكراً لك، لقد تم استلام طلبك بنجاح!"; // سنقوم بإنشاء view أفضل لاحقاً
+})->name('vacancies.apply.success');
+
+
 
 // =============================================
 // ====     روابط لوحة التحكم المحمية      ====
@@ -45,5 +52,14 @@ Route::middleware(['auth'])->prefix('dashboard')->name('dashboard.')->group(func
 
     // الخطوة 2: استثناء 'show' من الـ resource المحمي
     Route::resource('vacancies', VacancyController::class); // ->except(['show']);
+
+    Route::get('/vacancies/{vacancy}/applications', [VacancyApplicationController::class, 'index'])->name('vacancies.applications.index');
+
+    // الرابط الجديد لتحديث حالة الطلب  
+    Route::patch('/applications/{application}', [VacancyApplicationController::class, 'updateStatus'])->name('applications.updateStatus');
+
+    // الرابط الجديد لتحديث تقييم الطلب
+Route::patch('/applications/{application}/rating', [VacancyApplicationController::class, 'updateRating'])->name('applications.updateRating');
+
 
 });

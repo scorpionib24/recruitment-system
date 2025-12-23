@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Vacancy;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VacancyController extends Controller
 {
@@ -15,7 +16,8 @@ class VacancyController extends Controller
     public function index()
     {
          // Eager Loading: نحمل علاقة 'branch' مع الوظائف لتجنب استعلامات N+1
-        $vacancies = Vacancy::with('branch')->latest()->paginate(10);
+        $vacancies = Vacancy::with('branch')->withCount('candidates')->latest()->paginate(10);
+
 
         return view('dashboard.vacancies.index', compact('vacancies'));
     }

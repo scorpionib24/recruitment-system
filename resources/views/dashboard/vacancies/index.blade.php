@@ -48,8 +48,11 @@
                                         <td>{{ $vacancy->deadline ? $vacancy->deadline->format('Y-m-d') : 'غير محدد' }}</td>
                                         <td>
                                            <td>
-                                        <a href="#" class="btn btn-secondary btn-sm">المتقدمون</a>
-                                        
+                                        <a href="{{ route('dashboard.vacancies.applications.index', $vacancy->id) }}" class="btn btn-secondary btn-sm">
+                                            المتقدمون ({{ $vacancy->candidates_count }})
+                                        </a>
+
+
                                         {{-- رابط التعديل --}}
                                         <a href="{{ route('dashboard.vacancies.edit', $vacancy->id) }}" class="btn btn-primary btn-sm">تعديل</a>
 
