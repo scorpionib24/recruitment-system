@@ -5,6 +5,7 @@ use App\Http\Controllers\Dashboard\BranchController;
 use App\Http\Controllers\Dashboard\VacancyController;
 use App\Http\Controllers\Public\ApplicationController;
 use App\Http\Controllers\Dashboard\VacancyApplicationController;
+use App\Http\Controllers\Dashboard\ReportController;
 
 // =============================================
 // ====          الروابط العامة            ====
@@ -59,7 +60,11 @@ Route::middleware(['auth'])->prefix('dashboard')->name('dashboard.')->group(func
     Route::patch('/applications/{application}', [VacancyApplicationController::class, 'updateStatus'])->name('applications.updateStatus');
 
     // الرابط الجديد لتحديث تقييم الطلب
-Route::patch('/applications/{application}/rating', [VacancyApplicationController::class, 'updateRating'])->name('applications.updateRating');
+    Route::patch('/applications/{application}/rating', [VacancyApplicationController::class, 'updateRating'])->name('applications.updateRating');
+
+
+ // === الرابط الجديد لصفحة التقارير ===
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 
 
 });

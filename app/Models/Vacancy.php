@@ -39,6 +39,17 @@ class Vacancy extends Model
     /**
      * علاقة (Many-to-Many): كل وظيفة يمكن أن يتقدم لها عدة مرشحين.
      */
+     /**
+     * علاقة مباشرة مع جدول الطلبات (applications).
+     * هذه العلاقة ضرورية لعمل دوال العد مثل withCount.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
+    }
+    
   // في app/Models/Vacancy.php
 public function candidates()
 {

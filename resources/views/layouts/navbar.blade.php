@@ -17,11 +17,15 @@
                     <ul class="navbar-nav ms-auto">
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('branches.index') }}">branches</a>
+                            <a class="nav-link" href="{{ route('dashboard.branches.index') }}">branches</a>
                         </li>
 
                          <li class="nav-item">
-                            <a class="nav-link" href="{{ route('vacancies.index') }}">vacancies</a>
+                            <a class="nav-link" href="{{ route('dashboard.vacancies.index') }}">vacancies</a>
+                        </li>
+
+                        <li class="nav-item">
+                                <a class="nav-link" href="{{ route('dashboard.reports.index') }}">Reports</a>     
                         </li>
 
                         <!-- Authentication Links -->
