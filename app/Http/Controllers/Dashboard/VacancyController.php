@@ -48,7 +48,7 @@ class VacancyController extends Controller
         ]);
 
         // 2. أضف user_id الخاص بالموظف الذي أنشأ الوظيفة
-        $validatedData['user_id'] = auth()->id();
+        $validatedData['user_id'] = Auth::id(); // auth()->id();
 
         // 3. إنشاء سجل جديد في قاعدة البيانات
         Vacancy::create($validatedData);

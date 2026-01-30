@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable; // <-- تأكد من وجود هذا السطر
+
 
 class Candidate extends Model // <-- الخطوة 1: يرث من Model مباشرة
 {
-    use HasFactory;
+    use HasFactory, Notifiable; // <-- إضافة Notifiable هنا
 
     /**
      * الحقول المسموح بتعبئتها في جدول 'candidates'.
@@ -24,12 +26,13 @@ class Candidate extends Model // <-- الخطوة 1: يرث من Model مباش�
      * علاقة (Many-to-Many): كل متقدم يمكنه التقديم على عدة وظائف.
      */
    // في app/Models/Candidate.php
-public function vacancies()
-{
-    return $this->belongsToMany(Vacancy::class, 'applications')
-                ->using(Application::class) // <-- نفس السطر المهم
-                ->withPivot('stage', 'rating', 'applied_at')
-                ->withTimestamps();
-}
+    public function vacancies()
+    {
+        // هذا هو التعريف الصحيح الذي يعمل في كل الحالات
+        return $this->belongsToMany(Vacancy::class, 'applications')
+                    ->as('application') // نستخدم 'as' بدلاً من 'using'
+                    ->withPivot('id', 'stage', 'rating', 'applied_at') // أضفنا 'id' هنا
+                    ->withTimestamps();
+    }
 
 }

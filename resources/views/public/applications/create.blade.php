@@ -9,27 +9,16 @@
                     التقديم لوظيفة: <strong>{{ $vacancy->title }}</strong>
                 </div>
 
+               
+                @if (session('error'))
+                <div class="alert alert-danger">
+                   {{ session('error') }}
+                </div>
+                @endif
+
+
                 <div class="card-body">
-                    {{-- لعرض رسائل الخطأ العامة --}}
-                    @if (session('error'))
-                        <div class="alert alert-danger" role="alert">
-                            {{ session('error') }}
-                        </div>
-                    @endif
-                    <!-- show validation errors -->
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul class="mb-0">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif   
-
-
-
-                    {{-- مهم جداً: enctype="multipart/form-data" لرفع الملفات --}}
+                       
                     <form method="POST" action="{{ route('vacancies.apply.store', $vacancy->id) }}" enctype="multipart/form-data">
                         @csrf
 
@@ -60,7 +49,7 @@
 
                         <div class="mb-3">
                             <label for="resume" class="form-label">السيرة الذاتية (PDF, Word)</label>
-                            <input class="form-control @error('resume') is-invalid @enderror" id="resume" name="resume" type="file" accept=".pdf,.doc,.docx" >
+                            <input class="form-control @error('resume') is-invalid @enderror" id="resume" name="resume" type="file" required>
                             @error('resume')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
 

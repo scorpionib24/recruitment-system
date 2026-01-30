@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Models\Vacancy;
 use App\Models\Candidate;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB; // سنحتاج هذا لإدارة العمليات المعقدة
+use App\Notifications\ApplicationReceived; // <-- استيراد فئة الإشعار الجديدة
+use Illuminate\Support\Facades\Notification; // <-- استيراد واجهة الإشعارات
+use Illuminate\Support\Facades\Log;
+
 
 class ApplicationController extends Controller
 {
@@ -48,9 +52,11 @@ class ApplicationController extends Controller
                 ]
             );
 
+            //  لا تظهر رساله الخطأ للمستخدم
             // 3. التحقق مما إذا كان المتقدم قد قدم على هذه الوظيفة من قبل
             if ($candidate->vacancies()->where('vacancy_id', $vacancy->id)->exists()) {
                 // إذا كان قد قدم، أعده برسالة خطأ
+                //  dd('تم اكتشاف تقديم مزدوج. الكود وصل إلى هنا بنجاح.'); 
                 return back()->with('error', 'لقد قمت بالتقديم على هذه الوظيفة من قبل.');
             }
 
@@ -67,17 +73,26 @@ class ApplicationController extends Controller
             ]);
 
             DB::commit(); // تأكيد كل العمليات
+            // dd('Reached notification step'); // <-- أضف هذا السطر للاختبار
 
+            // === لإرسال الإشعار ===
+            // =================================================
+            $candidate->notify(new ApplicationReceived($vacancy, $candidate));
+
+            
         } catch (\Exception $e) {
-            DB::rollBack(); // تراجع عن كل العمليات في حال حدوث أي خطأ
-            // يمكنك هنا تسجيل الخطأ للمراجعة لاحقاً
-            // Log::error($e->getMessage());
-            // return back()->with('error', $e->getMessage() );
-            return back()->with('error', 'حدث خطأ غير متوقع أثناء معالجة طلبك. يرجى المحاولة مرة أخرى.');
-        }
+                DB::rollBack(); // تراجع عن كل العمليات في حال حدوث أي خطأ
+                // يمكنك هنا تسجيل الخطأ للمراجعة لاحقاً
+                // Log::error($e->getMessage());
+                return back()->with('error', $e->getMessage());
+                // , 'حدث خطأ غير متوقع أثناء معالجة طلبك. يرجى المحاولة مرة أخرى.'
+                
+            }
 
-        // 6. إعادة توجيه المستخدم إلى صفحة النجاح
-        return redirect()->route('vacancies.apply.success');
+            // 6. إعادة توجيه المستخدم إلى صفحة النجاح
+            return redirect()->route('vacancies.apply.success');
+
+      
     }
 
       

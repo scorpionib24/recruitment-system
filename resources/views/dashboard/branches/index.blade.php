@@ -1,6 +1,6 @@
 {{-- resources/views/dashboard/branches/index.blade.php --}}
 
-@extends('layouts.app') {{-- استخدام القالب الرئيسي الذي جاء مع laravel/ui --}}
+@extends('layouts.app') 
 
 @section('content')
 <div class="container">

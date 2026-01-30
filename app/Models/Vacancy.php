@@ -17,7 +17,7 @@ class Vacancy extends Model
         'description',
         'requirements',
         'branch_id',
-        // 'user_id', // هذا الحقل غير موجود في جدول vacancies حالياً، يجب إزالته أو إضافته في migration
+         'user_id', // هذا الحقل غير موجود في جدول vacancies حالياً، يجب إزالته أو إضافته في migration
         'deadline',
     ];
 
@@ -50,13 +50,16 @@ class Vacancy extends Model
         return $this->hasMany(Application::class);
     }
     
-  // في app/Models/Vacancy.php
-public function candidates()
-{
-    return $this->belongsToMany(Candidate::class, 'applications')
-                ->using(Application::class) // <-- هذا هو السطر الجديد والمهم
-                ->withPivot('id','stage', 'rating', 'applied_at')
-                ->withTimestamps();
-}
+   /**
+     * العلاقة التي تجلب كل المتقدمين لهذه الوظيفة.
+     */
+    public function candidates()
+    {
+        return $this->belongsToMany(Candidate::class, 'applications')
+                    ->as('application') // نستخدم 'as' بدلاً من 'using'
+                    ->withPivot('id', 'stage', 'rating', 'applied_at') // أضفنا 'id' هنا
+                    ->withTimestamps();
+    }
+
 
 }

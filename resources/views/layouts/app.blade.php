@@ -18,9 +18,9 @@
 </head>
 <body>
     <div id="app">
-        {{-- ... (محتوى Navbar لا يتغير) ... --}}
-        <nav class="navbar ..."> ... </nav>
-
+        
+        <!-- navaar -->
+         @include('layouts.navbar')
         <main class="py-4">
             @yield('content')
         </main>

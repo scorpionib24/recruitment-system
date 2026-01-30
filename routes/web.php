@@ -10,27 +10,26 @@ use App\Http\Controllers\Dashboard\ReportController;
 // =============================================
 // ====          الروابط العامة            ====
 // =============================================
-Auth::routes();
+
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 
+// after login redirect to home
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
 
-
-// هذا الـ Route ليس عليه أي middleware، وليس له بادئة URL، واسمه بسيط.
-// إنه عام ومتاح للجميع.
+// رابط لعرض تفاصيل وظيفة معينة (عام، غير محمي)
 Route::get('/vacancies/{vacancy}', [VacancyController::class, 'show'])->name('vacancies.show');
 
 
 // رابط لعرض نموذج التقديم لوظيفة معينة
 Route::get('/vacancies/{vacancy}/apply', [ApplicationController::class, 'create'])->name('vacancies.apply.create');
 
-// رابط لاستقبال بيانات نموذج التقديم
+// رابط لارسال بيانات نموذج التقديم
 Route::post('/vacancies/{vacancy}/apply', [ApplicationController::class, 'store'])->name('vacancies.apply.store');
 
 
@@ -39,10 +38,15 @@ Route::get('/apply/success', function () {
     return "شكراً لك، لقد تم استلام طلبك بنجاح!"; // سنقوم بإنشاء view أفضل لاحقاً
 })->name('vacancies.apply.success');
 
+// login routes | reset password routes | logout routes | password reset routes
+Auth::routes();
+
 
 
 // =============================================
 // ====     روابط لوحة التحكم المحمية      ====
+// Gate is public thing
+// Policy is model thing
 // =============================================
 
 // Middleware('auth') يضمن أن المستخدم يجب أن يكون مسجلاً دخوله لزيارة هذه الروابط
@@ -52,8 +56,10 @@ Route::middleware(['auth'])->prefix('dashboard')->name('dashboard.')->group(func
     Route::resource('branches', BranchController::class);
 
     // الخطوة 2: استثناء 'show' من الـ resource المحمي
+    //  وظائف CRUD للوظائف
     Route::resource('vacancies', VacancyController::class); // ->except(['show']);
 
+    // روابط إدارة طلبات التقديم للوظائف
     Route::get('/vacancies/{vacancy}/applications', [VacancyApplicationController::class, 'index'])->name('vacancies.applications.index');
 
     // الرابط الجديد لتحديث حالة الطلب  
@@ -65,6 +71,17 @@ Route::middleware(['auth'])->prefix('dashboard')->name('dashboard.')->group(func
 
  // === الرابط الجديد لصفحة التقارير ===
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+
+
+
+
+
+    // =========================================================
+    // اختبار إعدادات البريد الإلكتروني 
+    // في نهاية ملف routes/web.php
+    Route::get('/test-mail-config', function () {
+        return config('mail');
+    });
 
 
 });
