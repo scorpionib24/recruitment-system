@@ -19,15 +19,26 @@
                     <ul class="navbar-nav ms-auto">
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('dashboard.branches.index') }}">branches</a>
+                            <a class="nav-link" href="{{ route('dashboard.branches.index') }}">
+                                <i class="bi bi-diagram-3"></i> الفروع
+                            </a>
                         </li>
 
                          <li class="nav-item">
-                            <a class="nav-link" href="{{ route('dashboard.vacancies.index') }}">vacancies</a>
+                            <a class="nav-link" href="{{ route('dashboard.vacancies.index') }}">
+                                 <i class="bi bi-briefcase"></i> الوظائف الشاغرة</a>
                         </li>
 
                         <li class="nav-item">
-                                <a class="nav-link" href="{{ route('dashboard.reports.index') }}">Reports</a>     
+                            <a class="nav-link" href="{{ route('dashboard.employees.index') }}">
+                                <i class="bi bi-people"></i> الموظفون
+                            </a>
+                        </li>
+
+
+                        <li class="nav-item">
+                                <a class="nav-link" href="{{ route('dashboard.reports.index') }}">
+                                    <i class="bi bi-file-earmark-bar-graph"></i> التقارير</a>     
                         </li>
 
                         <!-- Authentication Links -->

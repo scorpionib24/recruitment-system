@@ -5,6 +5,7 @@ use App\Http\Controllers\Dashboard\BranchController;
 use App\Http\Controllers\Dashboard\VacancyController;
 use App\Http\Controllers\Public\ApplicationController;
 use App\Http\Controllers\Dashboard\VacancyApplicationController;
+use App\Http\Controllers\Dashboard\EmployeeController;
 use App\Http\Controllers\Dashboard\ReportController;
 
 // =============================================
@@ -69,7 +70,12 @@ Route::middleware(['auth'])->prefix('dashboard')->name('dashboard.')->group(func
     Route::patch('/applications/{application}/rating', [VacancyApplicationController::class, 'updateRating'])->name('applications.updateRating');
 
 
- // === الرابط الجديد لصفحة التقارير ===
+    
+    // رابط لجميع عمليات الموظفين
+    Route::resource('employees', EmployeeController::class);
+
+
+    // === الرابط الجديد لصفحة التقارير ===
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 
 
