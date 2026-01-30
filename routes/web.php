@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\BranchController;
+use App\Http\Controllers\Dashboard\DepartmentController;
 use App\Http\Controllers\Dashboard\VacancyController;
 use App\Http\Controllers\Public\ApplicationController;
 use App\Http\Controllers\Dashboard\VacancyApplicationController;
@@ -55,6 +56,8 @@ Route::middleware(['auth'])->prefix('dashboard')->name('dashboard.')->group(func
     
     // رابط لجميع عمليات الفروع
     Route::resource('branches', BranchController::class);
+    // رابط لجميع عمليات الأقسام
+    Route::resource('departments', DepartmentController::class);
 
     // الخطوة 2: استثناء 'show' من الـ resource المحمي
     //  وظائف CRUD للوظائف

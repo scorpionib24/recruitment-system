@@ -28,4 +28,12 @@ class Employee extends Model
     {
         return $this->belongsTo(Branch::class);
     }
+
+    /**
+     * العلاقة التي تجلب القسم الذي ينتمي إليه الموظف.
+     */
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
 }

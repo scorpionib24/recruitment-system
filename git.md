@@ -345,8 +345,39 @@ git pull origin main  # للتأكد من أن نسختك المحلية متط�
 
 git switch -c feat/candidate-portal
 
+<!-- Every Git Branch -->
+# 1. إضافة كل الملفات التي تم تعديلها أو إنشاؤها
+git add .
+# 2. تثبيت التغييرات مع رسالة واضحة تصف الإنجاز
+git commit -m "feat: Implement full CRUD for employees management"
+
+# 3. الانتقال إلى الفرع الرئيسي
+git checkout main
+
+# 4. التأكد من أن الفرع الرئيسي محدث (دائماً خطوة جيدة)
+git pull origin main
+
+# 5. دمج فرع الموظفين في الفرع الرئيسي
+git merge feat/employees-management
+
+# 6. رفع الفرع الرئيسي المحدث إلى GitHub/GitLab
+git push origin main
+
+# 7. حذف فرع الميزة من المستودع السحابي (لم نعد بحاجة إليه هناك)
+git push origin --delete feat/employees-management
+
+# 8. حذف فرع الميزة من جهازك المحلي للحفاظ على نظافة مساحة العمل
+git branch -d feat/employees-management
+
+
+
+
+
+
 1) php artisan make:controller Public/ApplicationController
 2) realtion between candaite and application
 
 لجعل ملفات السيرة الذاتية التي يتم رفعها قابلة للوصول عبر رابط عام، نفّذ هذا الأمر مرة واحدة فقط في المشروع.
 php artisan storage:link
+
+

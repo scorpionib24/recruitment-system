@@ -24,6 +24,12 @@
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dashboard.departments.index') }}">
+                                <i class="bi bi-building"></i> الأقسام
+                            </a>
+                        </li>
+
                          <li class="nav-item">
                             <a class="nav-link" href="{{ route('dashboard.vacancies.index') }}">
                                  <i class="bi bi-briefcase"></i> الوظائف الشاغرة</a>

@@ -16,8 +16,8 @@ class EmployeeController extends Controller
     public function index()
     {
         //    استخدمنا with('branch') لجلب بيانات الفرع المرتبط بكل موظف بكفاءة (Eager Loading)
-        $employees = Employee::with('branch')->latest()->paginate(15);
-        return view('dashboard.employees.index', compact('employees'));
+        $employees = Employee::with('branch', 'department')->latest()->paginate(15);
+        return view('dashboard.employees.index', compact('employees',));
     }
 
     /**
@@ -68,7 +68,8 @@ class EmployeeController extends Controller
     public function edit(Employee $employee)
     {
         $branches = Branch::all();
-        return view('dashboard.employees.edit', compact('employee', 'branches'));
+        $departments = Department::all();
+        return view('dashboard.employees.edit', compact('employee', 'branches', 'departments'));
     }
 
 

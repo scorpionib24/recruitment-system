@@ -58,17 +58,18 @@
                         </select>
                     </div>
 
-                     <!-- <div class="col-md-3 mb-3">
-                        <label for="department_id" class="form-label">القسم</label>
-                        <select class="form-select" id="department_id" name="department_id" required>
-                            <option value="" disabled selected>اختر القسم...</option>
-                            @foreach ($departments as $department)
-                                <option value="{{ $department->id }}" {{ old('department_id') == $department->id ? 'selected' : '' }}>
-                                    {{ $department->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div> -->
+                   <div class="col-md-4 mb-3">
+                    <label for="department_id" class="form-label">القسم</label>
+                    <select class="form-select" id="department_id" name="department_id" required>
+                        <option value="" disabled selected>اختر القسم...</option>
+                        @foreach ($departments as $department)
+                            {{-- في ملف edit.blade.php، هذا الكود سيختار القسم الحالي للموظف --}}
+                            <option value="{{ $department->id }}" {{ old('department_id', $employee->department_id ?? null) == $department->id ? 'selected' : '' }}>
+                                {{ $department->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
                     {{-- تواريخ ومعلومات أخرى --}}
                     <div class="col-md-3 mb-3">
@@ -79,7 +80,7 @@
                         <label for="salary" class="form-label">الراتب (اختياري)</label>
                         <input type="number" step="0.01" class="form-control" id="salary" name="salary" value="{{ old('salary') }}">
                     </div>
-                     <div class="col-md-4 mb-3">
+                     <div class="col-md-3 mb-3">
                         <label for="status" class="form-label">الحالة</label>
                         <select class="form-select" id="status" name="status" required>
                             <option value="active" {{ old('status', 'active') == 'active' ? 'selected' : '' }}>نشط</option>
