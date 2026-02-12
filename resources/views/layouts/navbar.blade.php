@@ -41,6 +41,12 @@
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dashboard.attendance.index') }}">
+                                <i class="bi bi-calendar-check"></i> الحضور والانصراف
+                            </a>
+                        </li>
+
 
                         <li class="nav-item">
                                 <a class="nav-link" href="{{ route('dashboard.reports.index') }}">

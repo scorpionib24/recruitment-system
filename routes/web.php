@@ -7,6 +7,7 @@ use App\Http\Controllers\Dashboard\VacancyController;
 use App\Http\Controllers\Public\ApplicationController;
 use App\Http\Controllers\Dashboard\VacancyApplicationController;
 use App\Http\Controllers\Dashboard\EmployeeController;
+use App\Http\Controllers\Dashboard\AttendanceController;
 use App\Http\Controllers\Dashboard\ReportController;
 
 // =============================================
@@ -27,10 +28,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 // رابط لعرض تفاصيل وظيفة معينة (عام، غير محمي)
 Route::get('/vacancies/{vacancy}', [VacancyController::class, 'show'])->name('vacancies.show');
 
-
 // رابط لعرض نموذج التقديم لوظيفة معينة
 Route::get('/vacancies/{vacancy}/apply', [ApplicationController::class, 'create'])->name('vacancies.apply.create');
-
 // رابط لارسال بيانات نموذج التقديم
 Route::post('/vacancies/{vacancy}/apply', [ApplicationController::class, 'store'])->name('vacancies.apply.store');
 
@@ -39,6 +38,8 @@ Route::post('/vacancies/{vacancy}/apply', [ApplicationController::class, 'store'
 Route::get('/apply/success', function () {
     return "شكراً لك، لقد تم استلام طلبك بنجاح!"; // سنقوم بإنشاء view أفضل لاحقاً
 })->name('vacancies.apply.success');
+
+
 
 // login routes | reset password routes | logout routes | password reset routes
 Auth::routes();
@@ -76,6 +77,11 @@ Route::middleware(['auth'])->prefix('dashboard')->name('dashboard.')->group(func
     
     // رابط لجميع عمليات الموظفين
     Route::resource('employees', EmployeeController::class);
+
+
+    // روابط وحدة الحضور والانصراف
+    Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+    Route::post('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
 
 
     // === الرابط الجديد لصفحة التقارير ===
