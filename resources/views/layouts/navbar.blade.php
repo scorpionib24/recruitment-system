@@ -47,6 +47,11 @@
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dashboard.payrolls.index') }}">
+                                 <i class="bi bi-cash-stack me-2"></i> إدارة الرواتب
+                            </a>
+                        </li>
 
                         <li class="nav-item">
                                 <a class="nav-link" href="{{ route('dashboard.reports.index') }}">

@@ -8,6 +8,7 @@ use App\Http\Controllers\Public\ApplicationController;
 use App\Http\Controllers\Dashboard\VacancyApplicationController;
 use App\Http\Controllers\Dashboard\EmployeeController;
 use App\Http\Controllers\Dashboard\AttendanceController;
+use App\Http\Controllers\Dashboard\PayrollController;
 use App\Http\Controllers\Dashboard\ReportController;
 
 // =============================================
@@ -82,6 +83,9 @@ Route::middleware(['auth'])->prefix('dashboard')->name('dashboard.')->group(func
     // روابط وحدة الحضور والانصراف
     Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
     Route::post('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
+
+    // Payroll 
+    Route::resource('payrolls', PayrollController::class);
 
 
     // === الرابط الجديد لصفحة التقارير ===
