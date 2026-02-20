@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
+use \DB;
 use Carbon\Carbon; // سنستخدم مكتبة Carbon للتعامل مع التواريخ
 
 class AttendanceController extends Controller
 {
     /**
+     * مشكلة تسجيل الحضور لكل الايام وعدم تلوين الايام بالاخضر للحضور
      * عرض سجل الحضور للشهر المحدد.
      */
     public function index(Request $request)
@@ -54,46 +56,54 @@ class AttendanceController extends Controller
     /**
      * حفظ أو تحديث سجلات الحضور.
      */
-    public function store(Request $request)
+   public function store(Request $request)
     {
-        // 1. التحقق من صحة البيانات الأساسية (الشهر والسنة)
-        $request->validate([
+        $validated = $request->validate([
             'month' => 'required|integer|between:1,12',
-            'year' => 'required|integer|min:2020',
-            'status' => 'required|array', // التأكد من أن 'status' مصفوفة
+            'year' => 'required|integer',
+            'employees' => 'required|array',
         ]);
 
-        $month = $request->input('month');
-        $year = $request->input('year');
-        $statuses = $request->input('status');
+        $month = $validated['month'];
+        $year = $validated['year'];
 
-        // 2. المرور على كل موظف تم إرسال بياناته
-        foreach ($statuses as $employeeId => $days) {
-            // 3. المرور على كل يوم لهذا الموظف
-            foreach ($days as $day => $status) {
-                // 4. إنشاء التاريخ الكامل من اليوم والشهر والسنة
-                $date = Carbon::createFromDate($year, $month, $day)->format('Y-m-d');
+        try {
+            DB::beginTransaction();
 
-                // 5. استخدام دالة updateOrCreate()
-                // هذه الدالة تبحث عن سجل يطابق الشرط الأول (employee_id, date)
-                // إذا وجدته، تقوم بتحديثه بالبيانات في الشرط الثاني.
-                // إذا لم تجده، تقوم بإنشاء سجل جديد بالبيانات كلها.
-                Attendance::updateOrCreate(
-                    [
+            // --- الخطوة الجديدة: مسح السجلات القديمة ---
+            // 1. احصل على قائمة ID الموظفين القادمين من النموذج
+            $employeeIds = array_keys($validated['employees']);
+
+            // 2. احذف كل سجلات الحضور لهؤلاء الموظفين في الشهر والسنة المحددين
+            Attendance::whereIn('employee_id', $employeeIds)
+                        ->whereYear('date', $year)
+                        ->whereMonth('date', $month)
+                        ->delete();
+            // -----------------------------------------
+
+            // 3. المرور على البيانات الجديدة وحفظها
+            foreach ($validated['employees'] as $employeeId => $statuses) {
+                foreach ($statuses as $date => $status) {
+                    // الآن، بما أننا مسحنا القديم، يمكننا إنشاء الجديد مباشرة
+                    // نحن نثق أن النموذج يرسل حالة لكل يوم
+                    Attendance::create([
                         'employee_id' => $employeeId,
-                        'date'        => $date,
-                    ],
-                    [
-                        'status'      => $status,
-                        // يمكنك إضافة حقول أخرى هنا إذا أردت، مثل وقت الحضور والانصراف
-                        // 'check_in_time' => ($status == 'present') ? '09:00:00' : null,
-                    ]
-                );
+                        'date' => $date,
+                        'status' => $status,
+                    ]);
+                }
             }
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // Log::error($e->getMessage());
+            return back()->with('error', 'حدث خطأ أثناء حفظ البيانات.');
         }
 
-        // 6. إعادة التوجيه إلى الصفحة السابقة مع رسالة نجاح
-        return back()->with('success', 'تم حفظ سجلات الحضور بنجاح.');
+        return back()->with('success', 'تم حفظ سجل الحضور بنجاح.');
     }
+
 
 }

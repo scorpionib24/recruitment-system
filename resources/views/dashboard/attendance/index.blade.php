@@ -65,12 +65,40 @@
                                             $attendanceRecord = $attendances->get($key);
                                         @endphp
                                         <td>
-                                            <select name="status[{{ $employee->id }}][{{ $day }}]" class="form-select form-select-sm">
+                                            <!-- <select name="status[{{ $employee->id }}][{{ $day }}]" class="form-select form-select-sm">
                                                 <option value="present" {{ optional($attendanceRecord)->status == 'present' ? 'selected' : '' }}>حاضر</option>
                                                 <option value="absent" {{ optional($attendanceRecord)->status == 'absent' ? 'selected' : '' }}>غائب</option>
                                                 <option value="leave" {{ optional($attendanceRecord)->status == 'leave' ? 'selected' : '' }}>إجازة</option>
                                                 <option value="holiday" {{ optional($attendanceRecord)->status == 'holiday' ? 'selected' : '' }}>عطلة</option>
+                                            </select> -->
+                                            <select name="employees[{{ $employee->id }}][{{ $day }}]" class="form-select form-select-sm">
+    
+                                                {{-- خيار "حاضر" --}}
+                                                <option value="present" 
+                                                    {{ optional($attendanceRecord)->status == 'present' ? 'selected' : '' }}>
+                                                    حاضر
+                                                </option>
+
+                                                {{-- خيار "غائب" (مع المنطق الافتراضي الجديد) --}}
+                                                <option value="absent" 
+                                                    {{ (optional($attendanceRecord)->status == 'absent' || !$attendanceRecord) ? 'selected' : '' }}>
+                                                    غائب
+                                                </option>
+
+                                                {{-- خيار "إجازة" --}}
+                                                <option value="leave" 
+                                                    {{ optional($attendanceRecord)->status == 'leave' ? 'selected' : '' }}>
+                                                    إجازة
+                                                </option>
+
+                                                {{-- خيار "عطلة" --}}
+                                                <option value="holiday" 
+                                                    {{ optional($attendanceRecord)->status == 'holiday' ? 'selected' : '' }}>
+                                                    عطلة
+                                                </option>
+
                                             </select>
+
                                         </td>
                                     @endfor
                                 </tr>
